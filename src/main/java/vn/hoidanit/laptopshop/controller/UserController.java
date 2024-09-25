@@ -20,8 +20,16 @@ public class UserController {
     public String getHomePage(Model model) {
         String test = this.userService.handleHello();
         model.addAttribute("ericNotHTML", test);
-        model.addAttribute("duyminhdeptrai", "From Controller");
+        model.addAttribute("duyminhdeptrai", "From Controller, Đây là content ánh xạ từ key duyminhdeptrai ");
         return "hello";
+    }
+
+    @RequestMapping("/admin/user")
+    public String getUserPage(Model model) {
+        String test = this.userService.handleHello();
+        model.addAttribute("ericNotHTML", test);
+        model.addAttribute("duyminhdeptrai", "From Controller, Đây là content ánh xạ từ key duyminhdeptrai ");
+        return "admin/user/create";
     }
 }
 
