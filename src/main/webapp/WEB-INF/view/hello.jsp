@@ -17,7 +17,7 @@
         </head>
 
         <body>
-            Hello From JSP, This is from webapp\WEB-INFO\view . This is from View!
+            hello.jsp From JSP, This is from webapp\WEB-INFO\view . This is from View!
             <h1>
                 ${ericNotHTML}
             </h1>
