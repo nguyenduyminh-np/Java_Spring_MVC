@@ -24,7 +24,7 @@ public class User {
     private String fullName;
     private String address;
     private String phone;
-    private String avatar;
+    private List<String> avatars;
     // roleID
 
     @OneToMany(mappedBy = "user")
@@ -34,33 +34,20 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public User() {
     }
 
-    public User(long id, String email, String password, String fullName, String address, String phone, String avatar) {
+    public User(long id, String email, String password, String fullName, String address, String phone,
+            List<String> avatars, List<Order> orders, Role role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.address = address;
         this.phone = phone;
-        this.avatar = avatar;
+        this.avatars = avatars;
+        this.orders = orders;
+        this.role = role;
     }
 
     public long getId() {
@@ -111,18 +98,35 @@ public class User {
         this.phone = phone;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public List<String> getAvatars() {
+        return avatars;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatars(List<String> avatars) {
+        this.avatars = avatars;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
         return "User [id=" + id + ", email=" + email + ", password=" + password + ", fullName=" + fullName
-                + ", address=" + address + ", phone=" + phone + ", avatar=" + avatar + "]";
+                + ", address=" + address + ", phone=" + phone + ", avatars=" + avatars + ", orders=" + orders
+                + ", role=" + role + "]";
     }
 
 }

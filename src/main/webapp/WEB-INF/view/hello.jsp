@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
         <html lang="en">
 
         <head>
@@ -12,19 +13,21 @@
             <!-- Latest compiled JavaScript -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-            <link href="/css/demo.css" rel="stylesheet">
+            <!-- <link href="/css/demo.css" rel="stylesheet"> -->
+
         </head>
 
         <body>
-            hello.jsp From JSP, This is from webapp\WEB-INFO\view . This is from View!
+            hello from jsp
             <h1>
-                ${ericNotHTML}
+                ${eric}
             </h1>
             <h2>
-                ${duyminhdeptrai}
+                ${hoidanit}
             </h2>
-            <button class="btn btn-warning"> Submit</button>
+            <button class="btn btn-warning">Submit</button>
         </body>
 
         </html>
