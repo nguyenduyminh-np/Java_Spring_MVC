@@ -2,12 +2,18 @@ package vn.hoidanit.laptopshop.domain;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
@@ -16,32 +22,32 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
+    @Size(min = 2, message = "Tên phải có tối thiểu 2 ký tự")
     private String name;
+
+    @NotNull
+    @DecimalMin(value = "0", inclusive = false, message = "Price phải lớn hơn 0")
     private double price;
+
     private String image;
+
+    @NotNull
+    @NotEmpty(message = "Thêm mô tả chi tiết sản phầm")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
+
+    @NotNull
+    @NotEmpty(message = "Thêm mô tả ngắn gọn sản phầm")
     private String shortDesc;
-    private long quanity;
+
+    @NotNull
+    @Min(value = 1, message = "Số lượng sản phẩm phải lớn hơn 1")
+    private long quantity;
+
     private long sold;
     private String factory;
     private String target;
-
-    public Product() {
-    }
-
-    public Product(long id, String name, double price, String image, String detailDesc, String shortDesc, long quanity,
-            long sold, String factory, String target) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.image = image;
-        this.detailDesc = detailDesc;
-        this.shortDesc = shortDesc;
-        this.quanity = quanity;
-        this.sold = sold;
-        this.factory = factory;
-        this.target = target;
-    }
 
     public long getId() {
         return id;
@@ -91,12 +97,12 @@ public class Product {
         this.shortDesc = shortDesc;
     }
 
-    public long getQuanity() {
-        return quanity;
+    public long getQuantity() {
+        return quantity;
     }
 
-    public void setQuanity(long quanity) {
-        this.quanity = quanity;
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
     }
 
     public long getSold() {
@@ -123,10 +129,27 @@ public class Product {
         this.target = target;
     }
 
+    public Product() {
+    }
+
+    public Product(long id, String name, double price, String image, String detailDesc, String shortDesc, long quantity,
+            long sold, String factory, String target) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.detailDesc = detailDesc;
+        this.shortDesc = shortDesc;
+        this.quantity = quantity;
+        this.sold = sold;
+        this.factory = factory;
+        this.target = target;
+    }
+
     @Override
     public String toString() {
         return "Product [id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", detailDesc="
-                + detailDesc + ", shortDesc=" + shortDesc + ", quanity=" + quanity + ", sold=" + sold + ", factory="
+                + detailDesc + ", shortDesc=" + shortDesc + ", quantity=" + quantity + ", sold=" + sold + ", factory="
                 + factory + ", target=" + target + "]";
     }
 

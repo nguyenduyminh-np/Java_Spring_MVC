@@ -6,12 +6,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UploadService;
 import vn.hoidanit.laptopshop.service.UserService;
@@ -53,7 +56,7 @@ public class UserController {
 
     // GET trang giao diện USER_DETAIL
     @GetMapping("/admin/user/{id}")
-    public String getUserDetailPage(Model model, @PathVariable long id) {
+    public String getUserDetailPage(Model model, @PathVariable("id") long id) {
         User user = this.userService.getUserById(id);
         model.addAttribute("user", user);
         model.addAttribute("id", id);
@@ -69,9 +72,24 @@ public class UserController {
 
     // POST trang giao diện CREATE USER
     @PostMapping(value = "/admin/user/create")
-    public String createUserPage(Model model, @ModelAttribute("newUser") User hoidanit,
+    public String createUserPage(Model model,
+            @ModelAttribute("newUser") @Valid User hoidanit,
+            BindingResult newUserBindingResult,
             @RequestParam("hoidanitFile") MultipartFile[] files) {
-        List<String> avatars = this.uploadService.handleSaveUploadFile(files, "avatar");
+
+        // validate
+        List<FieldError> errors = newUserBindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            // Check function BindingResult
+            System.out.println(error.getObjectName() + "Fault here >>>>>>> " +
+                    error.getDefaultMessage());
+        }
+
+        if (newUserBindingResult.hasErrors()) {
+            System.out.println("Check Binding Result Fault:>>>>>" + newUserBindingResult.getFieldErrors());
+            return "/admin/user/create";
+        }
+        List<String> avatars = this.uploadService.handleSaveUploadListFile(files, "avatar");
         String hashPassword = this.passwordEncoder.encode(hoidanit.getPassword());
         hoidanit.setAvatars(avatars);
         hoidanit.setPassword(hashPassword);
@@ -116,6 +134,7 @@ public class UserController {
         return "admin/user/delete";
     }
 
+    // POST trang giao diện DELETE USER
     @PostMapping("/admin/user/delete")
     public String postDeleteUser(Model model, @ModelAttribute("newUser") User eric) {
         System.out.println("run here at delelte >>>>>>>");

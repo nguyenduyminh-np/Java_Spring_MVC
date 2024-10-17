@@ -21,7 +21,42 @@ public class UploadService {
 
     }
 
-    public List<String> handleSaveUploadFile(MultipartFile[] files, String targetFolder) {
+    public String handleSaveUploadFile(MultipartFile file, String targetFolder) {
+        // don't upload file
+        if (file.isEmpty())
+            return "";
+        // relative path: absolute path
+        String rootPath = this.servletContext.getRealPath("/resources/images");
+        String finalName = "";
+        try {
+            byte[] bytes = file.getBytes();
+
+            File dir = new File(rootPath + File.separator + targetFolder);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            // Create the file on server
+            finalName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
+
+            File serverFile = new File(dir.getAbsolutePath() + File.separator + finalName);
+            // uuid
+
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(serverFile));
+            stream.write(bytes);
+            stream.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return finalName;
+    }
+
+    public List<String> handleSaveUploadListFile(MultipartFile[] files, String targetFolder) {
+
+        if (files.length == 0) {
+            return null;
+        }
         String rootPath = this.servletContext.getRealPath("/resources/images");
         List<String> finalNames = new ArrayList<>();
         for (int i = 0; i < files.length; i++) {
