@@ -75,7 +75,7 @@ public class UserController {
     public String createUserPage(Model model,
             @ModelAttribute("newUser") @Valid User hoidanit,
             BindingResult newUserBindingResult,
-            @RequestParam("hoidanitFile") MultipartFile[] files) {
+            @RequestParam("hoidanitFile") MultipartFile file) {
 
         // validate
         List<FieldError> errors = newUserBindingResult.getFieldErrors();
@@ -89,9 +89,9 @@ public class UserController {
             System.out.println("Check Binding Result Fault:>>>>>" + newUserBindingResult.getFieldErrors());
             return "/admin/user/create";
         }
-        List<String> avatars = this.uploadService.handleSaveUploadListFile(files, "avatar");
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(hoidanit.getPassword());
-        hoidanit.setAvatars(avatars);
+        hoidanit.setAvatar(avatar);
         hoidanit.setPassword(hashPassword);
         hoidanit.setRole(this.userService.getRoleByName(hoidanit.getRole().getName()));
 
@@ -109,9 +109,15 @@ public class UserController {
 
     // POST trang giao diện UPDATE USER
     @PostMapping("/admin/user/update")
-    public String postUpdateUser(Model model, @ModelAttribute("newUser") User hoidanit) {
+    public String postUpdateUser(Model model, @ModelAttribute("newUser") User hoidanit,
+            @RequestParam("hoidanitFile") MultipartFile file) {
         User currentUser = this.userService.getUserById(hoidanit.getId());
         if (currentUser != null) {
+
+            if (!file.isEmpty()) {
+                String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+                currentUser.setAvatar(avatar);
+            }
             System.out.println("run here at update:>>>>>>>>>> ");
             currentUser.setAddress(hoidanit.getAddress());
             currentUser.setFullName(hoidanit.getFullName());

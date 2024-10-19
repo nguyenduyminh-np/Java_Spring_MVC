@@ -36,7 +36,7 @@ public class User {
 
     private String address;
     private String phone;
-    private List<String> avatars;
+    private String avatar;
     // roleID
 
     @OneToMany(mappedBy = "user")
@@ -47,19 +47,6 @@ public class User {
     private Role role;
 
     public User() {
-    }
-
-    public User(long id, String email, String password, String fullName, String address, String phone,
-            List<String> avatars, List<Order> orders, Role role) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.fullName = fullName;
-        this.address = address;
-        this.phone = phone;
-        this.avatars = avatars;
-        this.orders = orders;
-        this.role = role;
     }
 
     public long getId() {
@@ -110,12 +97,12 @@ public class User {
         this.phone = phone;
     }
 
-    public List<String> getAvatars() {
-        return avatars;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvatars(List<String> avatars) {
-        this.avatars = avatars;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public List<Order> getOrders() {
@@ -134,11 +121,20 @@ public class User {
         this.role = role;
     }
 
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", email=" + email + ", password=" + password + ", fullName=" + fullName
-                + ", address=" + address + ", phone=" + phone + ", avatars=" + avatars + ", orders=" + orders
-                + ", role=" + role + "]";
+    public User(long id,
+            @NotNull @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$") String email,
+            @NotNull @Size(min = 2, message = "Password phải có tối thiểu 2 ký tự") String password,
+            @NotNull @Size(min = 3, message = "Fullname phải có tối thiểu 3 ký tự") String fullName, String address,
+            String phone, String avatar, List<Order> orders, Role role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.address = address;
+        this.phone = phone;
+        this.avatar = avatar;
+        this.orders = orders;
+        this.role = role;
     }
 
 }

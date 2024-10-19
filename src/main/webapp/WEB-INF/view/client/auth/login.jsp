@@ -50,7 +50,6 @@
                                                     <div>
                                                         <input type="hidden" name="${_csrf.parameterName}"
                                                             value="${_csrf.token}" />
-
                                                     </div>
 
                                                     <div class="mt-4 mb-0">
