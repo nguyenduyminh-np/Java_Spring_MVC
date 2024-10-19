@@ -36,13 +36,23 @@
                                                     <c:set var="errorEmail">
                                                         <form:errors path="email" cssClass="invalid-feedback" />
                                                     </c:set>
+                                                    <c:set var="errorFirstName">
+                                                        <form:errors path="firstName" cssClass="invalid-feedback" />
+                                                    </c:set>
+                                                    <c:set var="errorConfirmPassword">
+                                                        <form:errors path="confirmPassword"
+                                                            cssClass="invalid-feedback" />
+                                                    </c:set>
                                                     <div class="row mb-3">
                                                         <div class="col-md-6">
                                                             <div class="form-floating mb-3 mb-md-0">
-                                                                <form:input class="form-control" id="inputFirstName"
-                                                                    type="text" placeholder="Enter your first name"
+                                                                <form:input
+                                                                    class="form-control ${not empty errorFirstName ? 'is-invalid' : ''}"
+                                                                    id="inputFirstName" type="text"
+                                                                    placeholder="Enter your first name"
                                                                     path="firstName" />
                                                                 <label for="inputFirstName">First name</label>
+                                                                ${errorFirstName}
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
@@ -69,18 +79,20 @@
                                                                     id="inputPassword" type="password"
                                                                     placeholder="Create a password" path="password" />
                                                                 <label for="inputPassword">Password</label>
-                                                                <form:errors path="confirmPassword" />
-                                                                ${errorPassword}
+
+                                                                ${errorConfirmPassword}
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-floating mb-3 mb-md-0">
-                                                                <form:input class="form-control"
+                                                                <form:input
+                                                                    class="form-control ${not empty errorConfirmPassword ? 'is-invalid' : ''}"
                                                                     id="inputPasswordConfirm" type="password"
                                                                     placeholder="Confirm password"
                                                                     path="confirmPassword" />
                                                                 <label for="inputPasswordConfirm">Confirm
                                                                     Password</label>
+                                                                ${errorConfirmPassword}
                                                             </div>
                                                         </div>
                                                     </div>
