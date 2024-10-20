@@ -31,8 +31,8 @@
                                 <div class="container mt-5">
                                     <div class="row">
                                         <div class="col-12 mx-auto">
-                                            <img class="card-img-top img-fluid" src="/images/avatar/${user.avatar}"
-                                                alt="Image">
+                                            <img class="card-img-top img-fluid card" style="width: 40%"
+                                                src="/images/avatar/${user.avatar}" alt="Image">
                                             <div class="d-flex justify-content-between">
                                                 <h3>User detail with id = ${id}</h3>
                                             </div>
