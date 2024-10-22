@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 
@@ -46,7 +47,27 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
     public User() {
+    }
+
+    public User(long id,
+            @NotNull @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$") String email,
+            @NotNull @Size(min = 2, message = "Password phải có tối thiểu 2 ký tự") String password,
+            @NotNull @Size(min = 3, message = "Fullname phải có tối thiểu 3 ký tự") String fullName, String address,
+            String phone, String avatar, List<Order> orders, Role role, Cart cart) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.address = address;
+        this.phone = phone;
+        this.avatar = avatar;
+        this.orders = orders;
+        this.role = role;
+        this.cart = cart;
     }
 
     public long getId() {
@@ -121,20 +142,12 @@ public class User {
         this.role = role;
     }
 
-    public User(long id,
-            @NotNull @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$") String email,
-            @NotNull @Size(min = 2, message = "Password phải có tối thiểu 2 ký tự") String password,
-            @NotNull @Size(min = 3, message = "Fullname phải có tối thiểu 3 ký tự") String fullName, String address,
-            String phone, String avatar, List<Order> orders, Role role) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.fullName = fullName;
-        this.address = address;
-        this.phone = phone;
-        this.avatar = avatar;
-        this.orders = orders;
-        this.role = role;
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
 }
