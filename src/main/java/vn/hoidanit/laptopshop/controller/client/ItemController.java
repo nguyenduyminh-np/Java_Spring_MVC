@@ -1,10 +1,12 @@
 package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import vn.hoidanit.laptopshop.domain.Cart;
@@ -15,6 +17,7 @@ import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UserService;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -42,10 +45,10 @@ public class ItemController {
     public String addProductToCart(@PathVariable long id, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
-        long productId = id;
+        long idProduct = id;
         String email = (String) session.getAttribute("email");
 
-        this.productService.handleAddProductToCart(email, productId, session);
+        this.productService.handleAddProductToCart(email, idProduct, session);
 
         return "redirect:/";
     }
@@ -54,11 +57,12 @@ public class ItemController {
     public String getCartPage(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         long id = (long) session.getAttribute("id");
+        // Vi 2 bang User va Cart join = user.id, vì vậy set ID cho User và tìm kiếm
         User user = this.userService.getUserById(id);
 
         Cart cart = this.productService.fetchCartByUser(user);
 
-        List<CartDetail> cartDetails = cart.getCartDetails();
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
 
         double totalPrice = 0;
         for (CartDetail cartDetail : cartDetails) {
@@ -71,4 +75,10 @@ public class ItemController {
         return "client/cart/show";
     }
 
+    // POST trang giao diện DELETE USER
+    @PostMapping("/delete-cart-product/{id}")
+    public String postDeleteCart(@PathVariable long id) {
+        this.productService.deleteCartAndCartDetail(id);
+        return "redirect:/cart";
+    }
 }

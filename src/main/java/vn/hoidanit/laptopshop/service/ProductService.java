@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
@@ -102,11 +103,27 @@ public class ProductService {
             }
 
         }
-
-        // Luu cart_detail
     }
 
     public Cart fetchCartByUser(User user) {
         return this.cartRepository.findByUser(user);
+    }
+
+    public CartDetail fetchCartDetailById(long id) {
+        return this.cartDetailRepository.findCarDetailById(id);
+    }
+
+    public void deleteCartAndCartDetail(long idDetailCart) {
+        CartDetail cartDetail = this.cartDetailRepository.findCarDetailById(idDetailCart);
+        Cart cart = cartDetail.getCart();
+
+        if (cart.getSum() > 1) {
+            int sum = cart.getSum();
+            cart.setSum(sum - 1);
+        } else if (cart.getSum() == 1) {
+            this.cartRepository.deleteById(cart.getId());
+        }
+
+        this.cartDetailRepository.delete(cartDetail);
     }
 }
